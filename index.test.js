@@ -1,9 +1,12 @@
-const RomanNumber = require('./');
+const RomanNumber = require('.');
 
 const tests = {
   errors: [
     { input: null, output: new Error('Value required') },
     { input: '', output: new Error('Value required') },
+    { input: undefined, output: new Error('Value required') },
+    { input: {}, output: new Error('Invalid value') },
+    { input: [], output: new Error('Invalid value') },
     { input: 'error', output: new Error('Invalid value') },
     { input: 'IIII', output: new Error('Invalid value') },
     { input: '1473', output: new Error('Invalid value') },
@@ -21,6 +24,7 @@ const tests = {
     { input: 'CDXXIX', output: 429 },
     { input: 'MCDLXXXII', output: 1482 },
     { input: 'MCMLXXX', output: 1980 },
+    { input: 'MMMDCCCLXVII', output: 3867 },
   ],
   numbers: [
     { input: 1, output: 'I' },
@@ -30,18 +34,17 @@ const tests = {
     { input: 1968, output: 'MCMLXVIII' },
     { input: 2999, output: 'MMCMXCIX' },
     { input: 3000, output: 'MMM' },
-  ]
-}
-
+    { input: 3867, output: 'MMMDCCCLXVII' },
+  ],
+};
 
 describe('Kodify code challenge', () => {
-
   describe('tests the error and edge cases', () => {
-    tests.errors.forEach(test => {
+    tests.errors.forEach((test) => {
       try {
-        new RomanNumber(test.input)
-      }
-      catch (err) {
+        // eslint-disable-next-line no-new
+        new RomanNumber(test.input);
+      } catch (err) {
         it(`should return ${test.output}`, () => {
           expect(err).toEqual(test.output);
         });
@@ -50,8 +53,8 @@ describe('Kodify code challenge', () => {
   });
 
   describe('tests romans are succesfully converted to numbers', () => {
-    tests.romans.forEach(test => {
-      const romanNumber = new RomanNumber(test.input)
+    tests.romans.forEach((test) => {
+      const romanNumber = new RomanNumber(test.input);
       it(`should convert ${test.input} to  ${test.output}`, () => {
         expect(romanNumber.toInt()).toBe(test.output);
         expect(romanNumber.toString()).toBe(test.input);
@@ -60,13 +63,12 @@ describe('Kodify code challenge', () => {
   });
 
   describe('tests numbers are succesfully converted to romans', () => {
-    tests.numbers.forEach(test => {
-      const romanNumber = new RomanNumber(test.input)
+    tests.numbers.forEach((test) => {
+      const romanNumber = new RomanNumber(test.input);
       it(`should convert ${test.input} to  ${test.output}`, () => {
         expect(romanNumber.toString()).toBe(test.output);
         expect(romanNumber.toInt()).toBe(test.input);
       });
     });
   });
-
 });

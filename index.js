@@ -30,7 +30,9 @@ class RomanNumber {
   validator(input) {
     if (input === null || input === '') {
       throw new Error('Value required');
-    } else if ((input === `${input}` && !input.match(RomanRegex))
+    } else if (Array.isArray(input)
+      || typeof input === 'object'
+      || (input === `${input}` && !input.match(RomanRegex))
     ) {
       throw new Error('Invalid value');
     } else if (this.inputIsANumber && (input < 1 || input > 3999)) {
