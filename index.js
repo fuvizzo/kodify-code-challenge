@@ -14,20 +14,41 @@ const Combos = {
   I: 1,
 };
 
+const NameLengthSortedCombos = Object.keys(Combos).sort(
+  (val1, val2) => val2.length - val1.length,
+);
+
 class RomanNumber {
   constructor(input) {
     this.inputIsANumber = !isNaN(input);
     this.input = input;
   }
 
-
   /**
    * return an number from its roman representaion
    * @returns {Number} number
    */
   toInt() {
-    if (this.inputIsANumber)
+    if (this.inputIsANumber) {
       return this.input;
+    }
+
+    let stringValue = this.input;
+    return NameLengthSortedCombos.reduce((acc, val) => {
+      if (val.length === 2) {
+        if (stringValue.includes(val)) {
+          acc += Combos[val];
+          stringValue = stringValue.replace(val, '');
+        }
+      } else {
+        const re = new RegExp(val, 'g');
+        const count = (stringValue.match(re) || []).length;
+        if (count > 0) {
+          acc += count * Combos[val];
+        }
+      }
+      return acc;
+    }, 0);
   }
 
   /**
@@ -35,21 +56,22 @@ class RomanNumber {
    * @returns {String} roman representation
    */
   toString() {
-    if (!this.inputIsANumber)
+    if (!this.inputIsANumber) {
       return this.input;
+    }
 
     let roman = '';
     let diff = this.input;
-    for (let propName in Combos) {
-      const val = Combos[propName];
+    Object.keys(Combos).forEach((key) => {
+      const val = Combos[key];
       while (diff - val >= 0) {
-        roman += propName;
+        roman += key;
         diff -= val;
       }
-    }
+    });
+
     return roman;
   }
 }
-
 
 module.exports = RomanNumber;
