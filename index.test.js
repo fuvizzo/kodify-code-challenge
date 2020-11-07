@@ -32,3 +32,41 @@ const tests = {
     { input: 3000, output: 'MMM' },
   ]
 }
+
+
+describe('Kodify code challenge', () => {
+
+  describe('tests the error and edge cases', () => {
+    tests.errors.forEach(test => {
+      try {
+        new RomanNumber(test.input)
+      }
+      catch (err) {
+        it(`should return ${test.output}`, () => {
+          expect(err).toEqual(test.output);
+        });
+      }
+    });
+  });
+
+  describe('tests romans are succesfully converted to numbers', () => {
+    tests.romans.forEach(test => {
+      const romanNumber = new RomanNumber(test.input)
+      it(`should convert ${test.input} to  ${test.output}`, () => {
+        expect(romanNumber.toInt()).toBe(test.output);
+        expect(romanNumber.toString()).toBe(test.input);
+      });
+    });
+  });
+
+  describe('tests numbers are succesfully converted to romans', () => {
+    tests.numbers.forEach(test => {
+      const romanNumber = new RomanNumber(test.input)
+      it(`should convert ${test.input} to  ${test.output}`, () => {
+        expect(romanNumber.toString()).toBe(test.output);
+        expect(romanNumber.toInt()).toBe(test.input);
+      });
+    });
+  });
+
+});
