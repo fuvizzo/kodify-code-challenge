@@ -16,7 +16,8 @@ const Combos = {
 
 class RomanNumber {
   constructor(input) {
-
+    this.inputIsANumber = !isNaN(input);
+    this.input = input;
   }
 
 
@@ -25,7 +26,8 @@ class RomanNumber {
    * @returns {Number} number
    */
   toInt() {
-
+    if (this.inputIsANumber)
+      return this.input;
   }
 
   /**
@@ -33,8 +35,21 @@ class RomanNumber {
    * @returns {String} roman representation
    */
   toString() {
+    if (!this.inputIsANumber)
+      return this.input;
 
+    let roman = '';
+    let diff = this.input;
+    for (let propName in Combos) {
+      const val = Combos[propName];
+      while (diff - val >= 0) {
+        roman += propName;
+        diff -= val;
+      }
+    }
+    return roman;
   }
 }
+
 
 module.exports = RomanNumber;
