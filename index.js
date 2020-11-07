@@ -18,10 +18,24 @@ const NameLengthSortedCombos = Object.keys(Combos).sort(
   (val1, val2) => val2.length - val1.length,
 );
 
+const RomanRegex = /^M{0,3}(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$/;
+
 class RomanNumber {
   constructor(input) {
     this.inputIsANumber = !isNaN(input);
+    this.validator(input);
     this.input = input;
+  }
+
+  validator(input) {
+    if (input === null || input === '') {
+      throw new Error('Value required');
+    } else if ((input === `${input}` && !input.match(RomanRegex))
+    ) {
+      throw new Error('Invalid value');
+    } else if (this.inputIsANumber && (input < 1 || input > 3999)) {
+      throw new Error('Invalid range');
+    }
   }
 
   /**
